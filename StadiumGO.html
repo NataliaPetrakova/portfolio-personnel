@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StadiumGO — Projet UX | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --green: #19AA74;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/StadiumGO.png') center/cover no-repeat;
+  opacity: 0.3;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,26,46,0.95) 0%, rgba(26,26,46,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--green); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.hero h1 span { color: var(--green); }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--green); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+}
+
+/* MON ROLE */
+.role { background: var(--bg); }
+.role-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.role-step {
+  background: var(--bg3); border-radius: 16px;
+  padding: 1.5rem; position: relative;
+}
+.role-step-num {
+  font-size: 2.5rem; font-weight: 800;
+  color: rgba(116,81,235,0.08);
+  position: absolute; top: 1rem; right: 1rem;
+}
+.role-step-icon {
+  width: 44px; height: 44px;
+  background: rgba(116,81,235,0.1);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.role-step-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+.role-step h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+.role-step p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+/* AUDIT */
+.audit { background: var(--bg2); }
+.audit-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem; margin-top: 3rem;
+}
+.audit-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+}
+.audit-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
+.audit-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.audit-tag {
+  display: inline-block;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green); background: rgba(25,170,116,0.1);
+  padding: 0.2rem 0.7rem; border-radius: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+/* STATS */
+.stats { background: var(--text); }
+.stats .section-label { color: var(--green); }
+.stats .section-label::before { background: var(--green); }
+.stats .section-title { color: #fff; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2rem; margin-top: 3rem;
+}
+.stat-card {
+  text-align: center; padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+}
+.stat-num {
+  font-size: 3.5rem; font-weight: 800;
+  color: var(--green); line-height: 1; margin-bottom: 0.5rem;
+}
+.stat-desc { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+/* PROCESS */
+.process { background: var(--bg); }
+.process-timeline { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+.process-item {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 2rem; padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.process-item:last-child { border: none; }
+.process-phase {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); padding-top: 0.2rem;
+}
+.process-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.process-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+/* UI KIT */
+.uikit { background: var(--bg2); }
+.uikit-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.uikit-left { }
+.uikit-desc {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.8; margin-bottom: 2rem;
+}
+.colors-row { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+.color-swatch { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.swatch { width: 70px; height: 70px; border-radius: 12px; border: 1px solid var(--border); }
+.swatch-label { font-size: 0.72rem; color: var(--muted); }
+
+/* BTN PROTO */
+.btn-proto {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: linear-gradient(145deg, #7451EB, #9B6FF0);
+  color: #fff; text-decoration: none;
+  padding: 0.9rem 1.8rem; border-radius: 2rem;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.25s; cursor: none;
+}
+.btn-proto:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-proto svg { flex-shrink: 0; }
+
+/* IMG PHONES */
+.img-phones { display: flex; gap: 1.5rem; margin: 3rem 0; }
+.img-phones img { flex: 1; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid, .uikit-grid { grid-template-columns: 1fr; }
+  .role-steps { grid-template-columns: 1fr 1fr; }
+  .audit-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .process-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .img-phones { flex-direction: column; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">UX Design · Application mobile</span>
+    <h1>Stadium<span>GO</span></h1>
+    <p class="hero-desc">Application mobile dédiée au partage et à la rencontre autour de la passion du sport, facilitant l'accès au stade pour tous grâce à un service simple d'utilisation.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">UX Designer</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Prototype interactif</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Outils</div>
+        <div class="hero-meta-value">Figma · Sketch</div>
+      </div>
+    </div>
+    <a href="https://xd.adobe.com/view/b81edd60-9974-45ff-b2f3-59e956d2c9bb-ed4d/"
+       target="_blank" class="btn-proto">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      Voir le prototype Adobe XD
+    </a>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Favoriser le partage<br>autour du <em>sport</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>StadiumGO est une application mobile dont l'objectif est de favoriser le partage et la rencontre autour de la passion du sport tout en facilitant l'accès au stade à tous, grâce à un service simple d'utilisation.</p>
+      <p>Le client souhaitait une intervention graphique, ergonomique et d'amélioration de l'expérience utilisateur sur l'application mobile et le site internet.</p>
+      <p>J'ai conduit l'ensemble de la démarche UX : de la recherche utilisateur jusqu'au prototype interactif, en passant par les tests et l'élaboration du design system.</p>
+    </div>
+    <div class="contexte-side">
+      <div class="contexte-card">
+        <h4>Problème à résoudre</h4>
+        <p>Problèmes de "guidage" et de "contrôle utilisateur" identifiés lors de l'audit ergonomique initial - les utilisateurs ne comprenaient pas les étapes et ne pouvaient pas corriger facilement leurs erreurs.</p>
+      </div>
+      <div class="contexte-card">
+        <h4>Objectif</h4>
+        <p>Améliorer l'expérience utilisateur de l'application mobile en rendant le service plus intuitif, accessible et engageant pour tous les profils d'utilisateurs.</p>
+      </div>
+      <div class="contexte-card">
+        <h4>Chiffres clés</h4>
+        <p>1 sur 2 utilisateurs rencontrait des problèmes de guidage · 7 sur 10 seraient prêts à utiliser une application de covoiturage pour se rendre au stade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MON ROLE -->
+<section class="role">
+  <div class="reveal">
+    <p class="section-label">Mon rôle</p>
+    <h2 class="section-title">Démarche UX<br>de bout en bout</h2>
+  </div>
+  <div class="role-steps reveal">
+    <div class="role-step">
+      <div class="role-step-num">01</div>
+      <div class="role-step-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+      <h3>Audit ergonomique</h3>
+      <p>Analyse selon les critères de Bastien & Scapin - guidage, adaptabilité, gestion des erreurs, cohérence.</p>
+    </div>
+    <div class="role-step">
+      <div class="role-step-num">02</div>
+      <div class="role-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Recherche utilisateur</h3>
+      <p>Questionnaires, guerilla testing, interviews et construction du blueprint de service.</p>
+    </div>
+    <div class="role-step">
+      <div class="role-step-num">03</div>
+      <div class="role-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+      </div>
+      <h3>Modélisation</h3>
+      <p>Experience map, storyboard, persona et parcours utilisateur pour visualiser les points de friction.</p>
+    </div>
+    <div class="role-step">
+      <div class="role-step-num">04</div>
+      <div class="role-step-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3>Design & Prototype</h3>
+      <p>UI Kit, maquettes haute fidélité et prototype interactif réaliste sur Figma.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIT -->
+<section class="audit">
+  <div class="reveal">
+    <p class="section-label">Audit ergonomique</p>
+    <h2 class="section-title">Ce qui ne <em>fonctionnait</em> pas</h2>
+  </div>
+  <div class="audit-grid reveal">
+    <div class="audit-card">
+      <span class="audit-tag">Critères Bastien & Scapin</span>
+      <h3>Guidage</h3>
+      <p>L'utilisateur ne sait pas où il en est dans le processus. Les étapes ne sont pas clairement indiquées et les messages d'erreur sont insuffisants.</p>
+    </div>
+    <div class="audit-card">
+      <span class="audit-tag">Utilisabilité</span>
+      <h3>Contrôle utilisateur</h3>
+      <p>L'utilisateur ne peut pas facilement revenir en arrière ou corriger une erreur. Le flux de navigation est trop rigide et peu forgiving.</p>
+    </div>
+    <div class="audit-card">
+      <span class="audit-tag">Guerilla testing</span>
+      <h3>Tests terrain</h3>
+      <p>Deux problèmes majeurs identifiés : incompréhension de la page d'accueil et doublon de la ville de départ qui crée de la confusion.</p>
+    </div>
+  </div>
+
+  <!-- Screenshots audit -->
+  <div class="img-phones reveal">
+    <img src="images/Rechercher un trajet.png" alt="Rechercher un trajet" style="width:100%; height:400px; object-fit:contain; border-radius:16px; background:white;">
+    <img src="images/Liste des annonces.png" alt="Liste des annonces" style="width:100%; height:400px; object-fit:contain; border-radius:16px; background:white;">
+  </div>
+
+  <!-- Blueprint -->
+  <div class="reveal" style="margin-top:1rem">
+    <p class="section-label" style="margin-bottom:1rem">Blueprint de service</p>
+  </div>
+  <img src="images/Blueprint.png" alt="Blueprint" class="reveal" style="width:60%; height:auto; object-fit:contain; border-radius:16px; background:var(--bg3);">
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="reveal">
+    <p class="section-label">Résultats questionnaire</p>
+    <h2 class="section-title">Ce que les utilisateurs<br>nous ont appris</h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <div class="stat-num">1/2</div>
+      <div class="stat-desc">utilisateurs rencontrait des problèmes de guidage et de contrôle utilisateur</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7/10</div>
+      <div class="stat-desc">seraient prêts à utiliser une application de covoiturage pour se rendre au stade</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">+</div>
+      <div class="stat-desc">La plupart s'y rendent entre amis, beaucoup s'y rendent en famille - l'aspect social est central</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="reveal">
+    <p class="section-label">Processus de design</p>
+    <h2 class="section-title">Du problème<br>à la <em>solution</em></h2>
+  </div>
+  <div class="process-timeline reveal">
+    <div class="process-item">
+      <div class="process-phase">Comprendre</div>
+      <div class="process-content">
+        <h3>Audit & Blueprint</h3>
+        <p>Analyse du service existant selon les heuristiques, cartographie du blueprint pour comprendre le fonctionnement du service en interne et évaluer les ressources nécessaires.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-phase">Explorer</div>
+      <div class="process-content">
+        <h3>Guerilla testing & Questionnaire</h3>
+        <p>Tests utilisateurs terrain pour identifier les points de friction réels. Questionnaire quantitatif pour valider les hypothèses et comprendre les usages actuels.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-phase">Modéliser</div>
+      <div class="process-content">
+        <h3>Experience map & Storyboard</h3>
+        <p>Cartographie des émotions de l'usager avant, pendant et après l'interaction. Storyboard illustrant le parcours idéal pour orienter les décisions de conception.</p>
+      </div>
+    </div>
+    <div class="process-item">
+      <div class="process-phase">Concevoir</div>
+      <div class="process-content">
+        <h3>UI Kit & Prototype</h3>
+        <p>Élaboration d'un UI Kit cohérent avec l'identité de StadiumGO, maquettes haute fidélité et prototype interactif réaliste et fidèle à ce que pourrait être l'interface finale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guerilla testing -->
+  <div class="reveal" style="margin-top:3rem">
+    <p class="section-label" style="margin-bottom:1rem">Guerilla testing</p>
+  </div>
+  <img src="images/Guerilla.png" alt="Guerilla testing" class="reveal" style="width:60%; height:auto; border-radius:16px; margin-bottom:3rem;">
+
+  <!-- Experience map -->
+  <div class="reveal">
+    <p class="section-label" style="margin-bottom:1rem">Experience map</p>
+  </div>
+  <img src="images/Experience.png" alt="Experience map" class="reveal" style="width:60%; height:auto; border-radius:16px; margin-bottom:3rem;">
+
+  <!-- Storyboard -->
+  <div class="reveal">
+    <p class="section-label" style="margin-bottom:1rem">Storyboard</p>
+  </div>
+  <img src="images/Storyboard.png" alt="Storyboard" class="reveal" style="width:60%; height:auto; border-radius:16px;">
+</section>
+
+<!-- UI KIT -->
+<section class="uikit">
+  <div class="reveal">
+    <p class="section-label">UI Kit</p>
+    <h2 class="section-title">Un univers <em>convivial</em><br>et chaleureux</h2>
+  </div>
+  <div class="uikit-grid reveal">
+    <!-- COLONNE GAUCHE -->
+    <div class="uikit-left">
+      <p class="uikit-desc">Au delà des spécificités graphiques établies dans l'UI Kit, j'ai tenté de créer un univers convivial et chaleureux pour marquer l'idée de rencontre et de partage. Grâce à ce design system réfléchi en amont, j'ai pu élaborer un prototype réaliste et fidèle à ce que pourrait être une interface finale.</p>
+      <div class="colors-row">
+        <div class="color-swatch">
+          <div class="swatch" style="background:#BAD3BA"></div>
+          <span class="swatch-label">#BAD3BA</span>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#19AA74"></div>
+          <span class="swatch-label">#19AA74</span>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#E68E19"></div>
+          <span class="swatch-label">#E68E19</span>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#1D1D24"></div>
+          <span class="swatch-label">#1D1D24</span>
+        </div>
+        <div class="color-swatch">
+          <div class="swatch" style="background:#FFFFFF; border:1px solid #ddd;"></div>
+          <span class="swatch-label">#FFFFFF</span>
+        </div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <a href="https://xd.adobe.com/view/b81edd60-9974-45ff-b2f3-59e956d2c9bb-ed4d/"
+           target="_blank" class="btn-proto">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Voir le prototype Adobe XD
+        </a>
+      </div>
+    </div>
+    <!-- COLONNE DROITE : image UI Kit -->
+    <div>
+      <img src="images/UI Kit.png" alt="UI Kit StadiumGO" style="width:100%; height:auto; border-radius:16px;">
+    </div>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">StadiumGO - Projet UX</span>
+  <a href="#">
+    Projet suivant
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

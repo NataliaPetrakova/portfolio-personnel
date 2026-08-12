@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayForge TOMSEN — Projet QA | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --blue: #1A56DB;
+  --green: #1A9E5C;
+  --red: #D8384F;
+  --amber: #C77D0A;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a56db 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/payforge-hero.png') center/cover no-repeat;
+  opacity: 0.25;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.15; margin-bottom: 1rem;
+}
+.hero h1 span { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+.hero-btns { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--blue); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.contexte-card ul { list-style: none; margin-top: 0.5rem; }
+.contexte-card ul li {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+  padding-left: 1.1rem; position: relative; margin-bottom: 0.3rem;
+}
+.contexte-card ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.1rem;
+  font-size: 0.55rem; color: var(--accent);
+}
+.contexte-grid.cols-3 { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+/* METHODOLOGIE */
+.methodo { background: var(--bg); }
+.methodo-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.methodo-card {
+  background: var(--bg3); border-radius: 16px;
+  padding: 1.6rem;
+}
+.methodo-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--accent); }
+.methodo-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.8rem; }
+.methodo-card ul { list-style: none; }
+.methodo-card ul li {
+  font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+  padding-left: 1.1rem; position: relative; margin-bottom: 0.3rem;
+}
+.methodo-card ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.1rem;
+  font-size: 0.55rem; color: var(--accent);
+}
+
+/* STATS */
+.stats { background: var(--bg2); }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.stat-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.8rem; text-align: center;
+}
+.stat-card .num { font-size: 2.2rem; font-weight: 800; }
+.stat-card .num.green { color: var(--green); }
+.stat-card .num.red { color: var(--red); }
+.stat-card .num.accent { color: var(--accent); }
+.stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+/* REPARTITION */
+.repartition { background: var(--bg); }
+.rep-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.rep-card {
+  background: var(--bg3); border-radius: 16px; padding: 1.6rem;
+}
+.rep-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; }
+.rep-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.85rem; color: var(--muted);
+  padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+}
+.rep-row:last-child { border: none; }
+.rep-row .val { font-weight: 700; color: var(--text); }
+.rep-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.5rem; }
+.rep-dot.critique { background: var(--red); }
+.rep-dot.majeure { background: var(--amber); }
+.rep-dot.mineure { background: #E0C443; }
+
+/* ANOMALIES */
+.anomalies { background: var(--bg2); }
+.anomalie-card {
+  background: var(--bg); border-left: 4px solid var(--red);
+  border-radius: 12px; padding: 1.6rem; margin-bottom: 1.5rem;
+}
+.anomalie-card.majeure { border-left-color: var(--amber); }
+.anomalie-card.faible { border-left-color: #E0C443; }
+.anomalie-card:last-child { margin-bottom: 0; }
+.anomalie-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+.anomalie-tag {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: rgba(216,56,79,0.12); color: var(--red);
+  padding: 0.2rem 0.7rem; border-radius: 2rem;
+}
+.anomalie-tag.majeure { background: rgba(199,125,10,0.12); color: var(--amber); }
+.anomalie-tag.faible { background: rgba(224,196,67,0.18); color: #8a6d00; }
+.anomalie-niveau {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--bg3); padding: 0.2rem 0.7rem; border-radius: 2rem; color: var(--muted);
+}
+.anomalie-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.anomalie-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+/* OUTILS */
+.outils { background: var(--bg); }
+.outils-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem; margin-top: 3rem;
+}
+.outil-chip {
+  background: var(--bg3); border-radius: 14px;
+  padding: 1.4rem 1rem; text-align: center;
+}
+.outil-chip .name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+.outil-chip .desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+/* CONCLUSION */
+.conclusion { background: var(--bg2); }
+.conclusion-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: var(--red); color: #fff;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em;
+  padding: 0.6rem 1.4rem; border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+.conclusion-badge.success { background: var(--green); }
+.conclusion-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.9; margin-bottom: 1.2rem; max-width: 800px; }
+.reco-list { list-style: none; margin-top: 1.5rem; max-width: 800px; }
+.reco-list li {
+  font-size: 0.9rem; color: var(--text); line-height: 1.8;
+  padding-left: 1.3rem; position: relative; margin-bottom: 0.6rem;
+}
+.reco-list li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.15rem;
+  font-size: 0.6rem; color: var(--accent);
+}
+
+/* REFLEXION */
+.reflexion { background: var(--bg); }
+.reflex-item { margin-bottom: 2rem; max-width: 800px; }
+.reflex-item:last-child { margin-bottom: 0; }
+.reflex-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--accent); }
+.reflex-item p { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+/* BTN */
+.btn-proto {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+  color: #fff; text-decoration: none;
+  padding: 0.9rem 1.8rem; border-radius: 2rem;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.25s; cursor: none;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.btn-proto:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-proto svg { flex-shrink: 0; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid, .methodo-grid { grid-template-columns: 1fr; }
+  .contexte-grid.cols-3 { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .rep-grid { grid-template-columns: 1fr; }
+  .outils-grid { grid-template-columns: 1fr 1fr; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">QA Testing · Revue d'exigences, stratégie de test &amp; cahier de recette</span>
+    <h1>PayForge <span>TOMSEN</span></h1>
+    <p class="hero-desc">Préparation complète des tests pour TOMSEN, l'application fintech de PayForge : revue des exigences, stratégie de test et cahier de recette pour une application manipulant des données bancaires sensibles, sur 5 sprints répartis sur 4 mois.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">Consultante en test</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Revue d'exigences · Stratégie de test · Cahier de recette</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Secteur</div>
+        <div class="hero-meta-value">Fintech · Formation OpenClassrooms</div>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="https://docs.google.com/document/d/1JrBO8V538_ddHSyMfxWuxm8zZ2V4PHBs/edit" target="_blank" class="btn-proto">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="15" y2="17"/>
+        </svg>
+        Stratégie de test
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Sécuriser les tests<br>d'une application <em>fintech</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>PayForge est une entreprise du secteur fintech. Le projet TOMSEN consiste à développer une application web desktop permettant la création de compte, l'authentification, la connexion aux API bancaires, la consultation des données bancaires et le suivi de consommation. Le projet est organisé sur 5 sprints répartis sur 4 mois, en méthode Agile.</p>
+      <p>J'interviens en tant que consultante en test au sein de l'équipe Agile, aux côtés d'Elsa (Product Owner, responsable de la définition et de la validation des besoins), d'Alice (développeuse responsable des livraisons) et de Quentin (bureau d'études, en copie).</p>
+    </div>
+    <div>
+      <div class="contexte-card">
+        <h4>Objectif qualité</h4>
+        <p>100 % de validation sur les fonctionnalités critiques (authentification, pièces justificatives, interconnexions bancaires) et 85 % minimum sur les fonctionnalités de criticité moyenne (tableau de bord, conseiller virtuel).</p>
+      </div>
+      <div class="contexte-card">
+        <h4>Période</h4>
+        <p>Campagne organisée sur 5 sprints, répartis sur 4 mois (80 jours ouvrés disponibles).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGIE -->
+<section class="methodo">
+  <div class="reveal">
+    <p class="section-label">Stratégie de test</p>
+    <h2 class="section-title">25 scénarios <em>&amp;</em> 6 méthodes de test</h2>
+  </div>
+  <div class="methodo-grid reveal">
+    <div class="methodo-card">
+      <h3>Cas nominal &amp; cas d'erreur</h3>
+      <p>Pour chaque fonctionnalité, j'ai systématiquement prévu un cas nominal — comportement attendu avec des données valides — et des cas d'erreur pour vérifier la robustesse face à des données invalides, des services indisponibles ou des actions inattendues.</p>
+      <ul>
+        <li>Priorisation selon la criticité définie dans les spécifications</li>
+        <li>Couverture renforcée sur l'authentification et les interconnexions bancaires</li>
+      </ul>
+    </div>
+    <div class="methodo-card">
+      <h3>Non-régression &amp; traçabilité</h3>
+      <p>5 scénarios de non-régression sur les parcours critiques garantissent que les nouvelles évolutions n'impactent pas ce qui fonctionnait déjà. Chaque exigence TOM-x est reliée à au moins un scénario et un cas de test.</p>
+      <ul>
+        <li>Tests manuels uniquement — pas d'historique de tests, délai contraint</li>
+        <li>Environnements sandbox exclusivement, jamais de vraies données bancaires</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="reveal">
+    <p class="section-label">Chiffres clés</p>
+    <h2 class="section-title">Une préparation <em>chiffrée</em></h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <div class="num accent">31</div>
+      <div class="label">questions relevées</div>
+    </div>
+    <div class="stat-card">
+      <div class="num accent">25</div>
+      <div class="label">scénarios de test</div>
+    </div>
+    <div class="stat-card">
+      <div class="num accent">56</div>
+      <div class="label">cas de tests</div>
+    </div>
+    <div class="stat-card">
+      <div class="num green">19,25</div>
+      <div class="label">jours-homme estimés</div>
+    </div>
+  </div>
+</section>
+
+<!-- REPARTITION -->
+<section class="repartition">
+  <div class="reveal">
+    <p class="section-label">Planning &amp; complexité</p>
+    <h2 class="section-title">154 heures, soit <em>19,25 jours-homme</em></h2>
+  </div>
+  <div class="rep-grid reveal">
+    <div class="rep-card">
+      <h3>Par sprint</h3>
+      <div class="rep-row"><span>Sprint 1</span><span class="val">8</span></div>
+      <div class="rep-row"><span>Sprint 2</span><span class="val">6</span></div>
+      <div class="rep-row"><span>Sprint 3</span><span class="val">2</span></div>
+      <div class="rep-row"><span>Sprint 4</span><span class="val">2</span></div>
+      <div class="rep-row"><span>Sprint 5</span><span class="val">2</span></div>
+      <div class="rep-row"><span>Non-régression</span><span class="val">5</span></div>
+    </div>
+    <div class="rep-card">
+      <h3>Par complexité</h3>
+      <div class="rep-row"><span>Simple (2h)</span><span class="val">3</span></div>
+      <div class="rep-row"><span>Moyen (6h)</span><span class="val">14</span></div>
+      <div class="rep-row"><span>Complexe (8h)</span><span class="val">8</span></div>
+    </div>
+    <div class="rep-card">
+      <h3>Par niveau de risque</h3>
+      <div class="rep-row"><span><span class="rep-dot critique"></span>Élevé</span><span class="val">3</span></div>
+      <div class="rep-row"><span><span class="rep-dot majeure"></span>Moyen</span><span class="val">3</span></div>
+      <div class="rep-row"><span><span class="rep-dot mineure"></span>Faible</span><span class="val">1</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ANOMALIES (revue des exigences) -->
+<section class="anomalies">
+  <div class="reveal">
+    <p class="section-label">Revue des exigences</p>
+    <h2 class="section-title">Les coquilles <em>critiques</em></h2>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">TOM-6</span>
+    </div>
+    <h3>Champ "Prénom" typé numérique</h3>
+    <p>Le champ est défini comme numérique dans les spécifications, alors qu'il doit être textuel.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">TOM-6</span>
+    </div>
+    <h3>Format de date incohérent</h3>
+    <p>Le format JJ/MM.AAAA mélange deux séparateurs différents dans les spécifications.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">TOM-6</span>
+    </div>
+    <h3>Règle d'âge figée sur 2007</h3>
+    <p>La règle d'âge est basée sur l'année 2007, qui deviendra incorrecte avec le temps et devrait être calculée dynamiquement.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">TOM-7</span>
+    </div>
+    <h3>Comportement manquant après "Enregistrer"</h3>
+    <p>Aucun comportement n'est décrit après l'action "Enregistrer", ni dans les spécifications ni dans le prototype Figma.</p>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Critique</span>
+      <span class="anomalie-niveau">TOM-10</span>
+    </div>
+    <h3>Incohérence HTTP / HTTPS</h3>
+    <p>Les URLs fournies utilisent le protocole HTTP, en contradiction avec les exigences de sécurité HTTPS — critique sur une application bancaire.</p>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Critique</span>
+      <span class="anomalie-niveau">TOM-13</span>
+    </div>
+    <h3>Même incohérence sur l'API transactions</h3>
+    <p>L'API de consultation des transactions présente la même incohérence HTTP/HTTPS.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">TOM-10/11</span>
+    </div>
+    <h3>Incohérence de nommage API</h3>
+    <p>Les données retournées par l'API et les libellés affichés dans l'application ne portent pas les mêmes noms.</p>
+  </div>
+
+  <a href="https://docs.google.com/spreadsheets/d/1ouibCe2gRpJMDYpTq7IYQEjFn8vGFo8P/edit?gid=410189430#gid=410189430" target="_blank" class="btn-proto" style="background:var(--accent); border-color:var(--accent); margin-top:1rem;">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+    </svg>
+    Voir la revue des exigences
+  </a>
+</section>
+
+<!-- OUTILS (méthodes de test) -->
+<section class="outils">
+  <div class="reveal">
+    <p class="section-label">Méthodes de test</p>
+    <h2 class="section-title">Six méthodes <em>retenues</em></h2>
+  </div>
+  <div class="outils-grid reveal">
+    <div class="outil-chip">
+      <div class="name">Fonctionnels</div>
+      <div class="desc">Vérifier la conformité aux spécifications sur l'ensemble des sprints</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">IHM</div>
+      <div class="desc">Comparer les écrans développés avec les maquettes Figma</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Intégration</div>
+      <div class="desc">Échanges en temps réel avec les API bancaires BDF et Finabank</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Sécurité</div>
+      <div class="desc">Authentification, gestion des accès, protection des données sensibles</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Non-régression</div>
+      <div class="desc">Garantir la stabilité des fonctionnalités déjà validées</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Inter-projets</div>
+      <div class="desc">Vérifier l'absence d'impact avec le projet partenaire intégré à TOMSEN</div>
+    </div>
+  </div>
+</section>
+
+<!-- RISQUES -->
+<section class="anomalies">
+  <div class="reveal">
+    <p class="section-label">Risques &amp; préconisations</p>
+    <h2 class="section-title">Anticiper les risques <em>projet</em></h2>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Élevé</span>
+    </div>
+    <h3>Absence d'historique de tests</h3>
+    <p>Aucun patrimoine de tests existant sur lequel s'appuyer pour ce premier cycle.</p>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Élevé</span>
+    </div>
+    <h3>Manipulation de données bancaires sensibles</h3>
+    <p>Les APIs exposent des données financières personnelles — usage exclusif des environnements sandbox recommandé.</p>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Élevé</span>
+    </div>
+    <h3>Incohérence HTTP / HTTPS</h3>
+    <p>Les URLs fournies en HTTP contredisent les exigences de sécurité HTTPS attendues sur une application bancaire.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Moyen</span>
+    </div>
+    <h3>Dépendance à un projet externe</h3>
+    <p>Un projet partenaire doit être intégré à TOMSEN, mais ses spécifications restent à confirmer par Elsa.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Moyen</span>
+    </div>
+    <h3>Délai projet contraint</h3>
+    <p>4 mois pour couvrir 15 fonctionnalités et une campagne de non-régression complète.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Moyen</span>
+    </div>
+    <h3>Règle d'âge non dynamique</h3>
+    <p>La valeur 2007 figée dans les spécifications deviendra incorrecte avec le temps.</p>
+  </div>
+
+  <div class="anomalie-card faible reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag faible">Faible</span>
+    </div>
+    <h3>Type de donnée incorrect sur "Prénom"</h3>
+    <p>Facilement corrigeable avant le développement.</p>
+  </div>
+</section>
+
+<!-- CAHIER DE RECETTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Livrable opérationnel</p>
+    <h2 class="section-title">56 cas de tests <em>prêts à l'exécution</em></h2>
+  </div>
+  <div class="contexte-grid cols-3 reveal">
+    <div class="contexte-card">
+      <h4>Structure (8 onglets)</h4>
+      <ul>
+        <li>Exigences — mapping TOM-ID / cas de tests</li>
+        <li>Cas de tests — référence complète des 56 CDT</li>
+        <li>Sprint 1 à Sprint 5 — onglets d'exécution</li>
+        <li>Non-régression — 18 cas critiques à rejouer</li>
+      </ul>
+    </div>
+    <div class="contexte-card">
+      <h4>Contenu de chaque cas</h4>
+      <ul>
+        <li>Identifiant unique (CDT-001 à CDT-056)</li>
+        <li>Préconditions directes et indépendantes</li>
+        <li>Mode opératoire détaillé étape par étape</li>
+        <li>Résultat attendu, résultat obtenu, statut</li>
+        <li>Colonne commentaires pour tracer les anomalies</li>
+      </ul>
+    </div>
+    <div class="contexte-card">
+      <h4>Statuts prévus</h4>
+      <p>« À exécuter » pour les cas prêts. « Bloqué » pour les cas dont les préconditions dépendent de réponses encore en attente — notamment sur l'authentification double facteur et la biométrie.</p>
+    </div>
+  </div>
+  <a href="https://docs.google.com/spreadsheets/d/1RtkcT1R3LBlna6U5aJH0GTei0TzYsOcw/edit?gid=2064410043#gid=2064410043" target="_blank" class="btn-proto" style="background:var(--accent); border-color:var(--accent); margin-top:2rem;">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+    </svg>
+    Voir le cahier de recette
+  </a>
+</section>
+
+<!-- REFLEXION -->
+<section class="reflexion">
+  <div class="reveal">
+    <p class="section-label">Recul &amp; analyse critique</p>
+    <h2 class="section-title">Ce que j'aurais pu <em>approfondir</em></h2>
+  </div>
+  <div class="reveal">
+    <div class="reflex-item">
+      <h3>Tests de performance</h3>
+      <p>Non demandés par Elsa (aucune exigence de temps de réponse ou de charge définie), hors périmètre d'un premier cycle sans historique de tests, et incompatibles avec le budget temps de 19,25 jours déjà alloué aux tests fonctionnels.</p>
+    </div>
+    <div class="reflex-item">
+      <h3>Tests d'API automatisés</h3>
+      <p>Écartés faute de patrimoine de tests existant et compte tenu du délai contraint ; les API bancaires ont été couvertes par des tests d'intégration manuels. Cette automatisation reste une évolution possible pour un prochain cycle, une fois l'application stabilisée.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="conclusion">
+  <div class="reveal">
+    <p class="section-label">Conclusion de la mission</p>
+    <h2 class="section-title">3 livrables <em>produits</em></h2>
+  </div>
+  <div class="conclusion-text reveal">
+    <span class="conclusion-badge success">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+      Mission réalisée — Prête pour l'exécution des tests
+    </span>
+    <p>La revue des exigences a permis d'identifier 7 coquilles et 31 questions avant le développement. La stratégie de test a défini les méthodes, les 25 scénarios et la couverture nécessaire sur 19,25 jours estimés. Le cahier de recette fournit un support opérationnel avec 56 cas de tests prêts à l'exécution.</p>
+    <p style="margin-top:2rem; font-weight:600; color:var(--text);">Recommandations prioritaires :</p>
+    <ul class="reco-list">
+      <li>Créer un référentiel de tests réutilisable dès le Sprint 1</li>
+      <li>N'utiliser que des environnements sandbox pour les données bancaires</li>
+      <li>Clarifier le protocole HTTPS avant les tests d'intégration</li>
+      <li>Corriger les incohérences de spécifications avant le développement</li>
+    </ul>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">PayForge - Projet QA</span>
+  <a href="724Events.html">
+    Projet précédent
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

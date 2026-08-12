@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>724 Events — Projet QA | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --blue: #1A56DB;
+  --green: #1A9E5C;
+  --red: #D8384F;
+  --amber: #C77D0A;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a56db 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/724events.png') center/cover no-repeat;
+  opacity: 0.25;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.15; margin-bottom: 1rem;
+}
+.hero h1 span { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--blue); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.contexte-card ul { list-style: none; margin-top: 0.5rem; }
+.contexte-card ul li {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+  padding-left: 1.1rem; position: relative; margin-bottom: 0.3rem;
+}
+.contexte-card ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.1rem;
+  font-size: 0.55rem; color: var(--accent);
+}
+
+/* METHODOLOGIE */
+.methodo { background: var(--bg); }
+.methodo-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.methodo-card {
+  background: var(--bg3); border-radius: 16px;
+  padding: 1.6rem;
+}
+.methodo-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--accent); }
+.methodo-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.8rem; }
+.methodo-card ul { list-style: none; }
+.methodo-card ul li {
+  font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+  padding-left: 1.1rem; position: relative; margin-bottom: 0.3rem;
+}
+.methodo-card ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.1rem;
+  font-size: 0.55rem; color: var(--accent);
+}
+
+/* STATS */
+.stats { background: var(--bg2); }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.stat-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.8rem; text-align: center;
+}
+.stat-card .num { font-size: 2.2rem; font-weight: 800; }
+.stat-card .num.green { color: var(--green); }
+.stat-card .num.red { color: var(--red); }
+.stat-card .num.accent { color: var(--accent); }
+.stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+/* REPARTITION */
+.repartition { background: var(--bg); }
+.rep-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.rep-card {
+  background: var(--bg3); border-radius: 16px; padding: 1.6rem;
+}
+.rep-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; }
+.rep-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.85rem; color: var(--muted);
+  padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+}
+.rep-row:last-child { border: none; }
+.rep-row .val { font-weight: 700; color: var(--text); }
+.rep-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.5rem; }
+.rep-dot.critique { background: var(--red); }
+.rep-dot.majeure { background: var(--amber); }
+.rep-dot.mineure { background: #E0C443; }
+
+/* ANOMALIES */
+.anomalies { background: var(--bg2); }
+.anomalie-card {
+  background: var(--bg); border-left: 4px solid var(--red);
+  border-radius: 12px; padding: 1.6rem; margin-bottom: 1.5rem;
+}
+.anomalie-card.majeure { border-left-color: var(--amber); }
+.anomalie-card:last-child { margin-bottom: 0; }
+.anomalie-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+.anomalie-tag {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: rgba(216,56,79,0.12); color: var(--red);
+  padding: 0.2rem 0.7rem; border-radius: 2rem;
+}
+.anomalie-tag.majeure { background: rgba(199,125,10,0.12); color: var(--amber); }
+.anomalie-niveau {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--bg3); padding: 0.2rem 0.7rem; border-radius: 2rem; color: var(--muted);
+}
+.anomalie-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.anomalie-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+/* OUTILS */
+.outils { background: var(--bg); }
+.outils-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem; margin-top: 3rem;
+}
+.outil-chip {
+  background: var(--bg3); border-radius: 14px;
+  padding: 1.4rem 1rem; text-align: center;
+}
+.outil-chip .name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+.outil-chip .desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+/* CONCLUSION */
+.conclusion { background: var(--bg2); }
+.conclusion-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: var(--red); color: #fff;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em;
+  padding: 0.6rem 1.4rem; border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+.conclusion-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.9; margin-bottom: 1.2rem; max-width: 800px; }
+.reco-list { list-style: none; margin-top: 1.5rem; max-width: 800px; }
+.reco-list li {
+  font-size: 0.9rem; color: var(--text); line-height: 1.8;
+  padding-left: 1.3rem; position: relative; margin-bottom: 0.6rem;
+}
+.reco-list li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.15rem;
+  font-size: 0.6rem; color: var(--accent);
+}
+
+/* REFLEXION */
+.reflexion { background: var(--bg); }
+.reflex-item { margin-bottom: 2rem; max-width: 800px; }
+.reflex-item:last-child { margin-bottom: 0; }
+.reflex-item h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--accent); }
+.reflex-item p { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+
+/* BTN */
+.btn-proto {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: linear-gradient(145deg, #7451EB, #9B6FF0);
+  color: #fff; text-decoration: none;
+  padding: 0.9rem 1.8rem; border-radius: 2rem;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.25s; cursor: none;
+}
+.btn-proto:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-proto svg { flex-shrink: 0; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid, .methodo-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .rep-grid { grid-template-columns: 1fr; }
+  .outils-grid { grid-template-columns: 1fr 1fr; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">QA Testing · Recette fonctionnelle & tests exploratoires</span>
+    <h1>724 <span>Events</span></h1>
+    <p class="hero-desc">Campagne de tests fonctionnels menée sur le site 724 Events : vérification de la conformité au cahier de recette, tests exploratoires, documentation des anomalies sur Jira, et décision finale GO/NO GO.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">Testeuse QA</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Cahier de recette · Bilan de campagne</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Secteur</div>
+        <div class="hero-meta-value">Formation OpenClassrooms</div>
+      </div>
+    </div>
+    <a href="https://app.notion.com/p/1f3f8e1515e58077b47efd719c70663d?v=1f3f8e1515e581e9a0f6000c13699df3" target="_blank" class="btn-proto" style="background:rgba(255,255,255,0.12); backdrop-filter:blur(10px);">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      Cahier de recette (Notion)
+    </a>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Vérifier la conformité<br>d'un site <em>événementiel</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>724 Events est un site permettant aux utilisateurs de découvrir des événements, de s'y inscrire et de contacter les organisateurs. Cette campagne de tests visait à vérifier la conformité fonctionnelle du site avant sa mise en production, en s'appuyant à la fois sur un cahier de recette existant et sur des tests exploratoires libres.</p>
+      <p>Ma double compétence UX/UI Design et QA m'a permis d'aborder cette campagne avec une approche complète : aussi bien du point de vue utilisateur (lisibilité, fluidité des parcours, accessibilité, ergonomie) que de la fiabilité technique et fonctionnelle du produit.</p>
+    </div>
+    <div>
+      <div class="contexte-card">
+        <h4>Objectifs de la campagne</h4>
+        <ul>
+          <li>Vérifier la conformité du site aux spécifications fonctionnelles (cahier de recette)</li>
+          <li>Identifier de nouveaux bugs via des tests exploratoires</li>
+          <li>Documenter l'ensemble des anomalies détectées sur Jira</li>
+          <li>Consolider les résultats pour déterminer si le produit est livrable (GO/NO GO)</li>
+        </ul>
+      </div>
+      <div class="contexte-card">
+        <h4>Période</h4>
+        <p>Campagne menée du 15 mai 2025 au 29 mai 2025.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGIE -->
+<section class="methodo">
+  <div class="reveal">
+    <p class="section-label">Méthodologie</p>
+    <h2 class="section-title">Tests scriptés <em>&amp;</em> exploratoires</h2>
+  </div>
+  <div class="methodo-grid reveal">
+    <div class="methodo-card">
+      <h3>Tests scriptés</h3>
+      <p>Réalisés à partir du cahier de recette fourni : chaque scénario est défini à l'avance, avec des étapes précises et un résultat attendu. Mon rôle était de vérifier que chaque fonctionnalité développée fonctionne comme prévu, selon les exigences.</p>
+      <ul>
+        <li>Exécution de chaque cas de test en reproduisant les étapes définies</li>
+        <li>Comparaison entre résultat attendu et résultat obtenu</li>
+      </ul>
+    </div>
+    <div class="methodo-card">
+      <h3>Tests exploratoires</h3>
+      <p>Sessions plus libres, sans script prédéfini : je me suis mise dans la peau d'un utilisateur réel pour détecter des bugs non prévus dans les scénarios initiaux.</p>
+      <ul>
+        <li>Navigation mobile et responsive</li>
+        <li>Validation de formulaires (email, champ vide, limite de caractères, date passée)</li>
+        <li>Accessibilité</li>
+        <li>Interactions avec carrousel / slider</li>
+        <li>Résilience face aux saisies malveillantes (injections, erreurs API/JS)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="reveal">
+    <p class="section-label">Résultats globaux</p>
+    <h2 class="section-title">74 cas de tests <em>exécutés</em></h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-card">
+      <div class="num accent">74</div>
+      <div class="label">tests exécutés</div>
+    </div>
+    <div class="stat-card">
+      <div class="num green">52</div>
+      <div class="label">tests OK</div>
+    </div>
+    <div class="stat-card">
+      <div class="num red">22</div>
+      <div class="label">tests KO</div>
+    </div>
+    <div class="stat-card">
+      <div class="num accent">20</div>
+      <div class="label">anomalies enregistrées sur Jira</div>
+    </div>
+  </div>
+</section>
+
+<!-- REPARTITION -->
+<section class="repartition">
+  <div class="reveal">
+    <p class="section-label">Répartition des anomalies</p>
+    <h2 class="section-title">Par type, <em>criticité</em> et fonctionnalité</h2>
+  </div>
+  <div class="rep-grid reveal">
+    <div class="rep-card">
+      <h3>Par type de test</h3>
+      <div class="rep-row"><span>Test scripté</span><span class="val">6</span></div>
+      <div class="rep-row"><span>Test exploratoire</span><span class="val">14</span></div>
+    </div>
+    <div class="rep-card">
+      <h3>Par criticité</h3>
+      <div class="rep-row"><span><span class="rep-dot critique"></span>Critique</span><span class="val">2</span></div>
+      <div class="rep-row"><span><span class="rep-dot majeure"></span>Majeure</span><span class="val">9</span></div>
+      <div class="rep-row"><span><span class="rep-dot mineure"></span>Mineure</span><span class="val">9</span></div>
+    </div>
+    <div class="rep-card">
+      <h3>Par fonctionnalité</h3>
+      <div class="rep-row"><span>Formulaire de réservation</span><span class="val">7</span></div>
+      <div class="rep-row"><span>Formulaire de contact</span><span class="val">5</span></div>
+      <div class="rep-row"><span>Slider (carrousel)</span><span class="val">3</span></div>
+      <div class="rep-row"><span>Responsive mobile</span><span class="val">3</span></div>
+      <div class="rep-row"><span>Navigation / liens</span><span class="val">2</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ANOMALIES -->
+<section class="anomalies">
+  <div class="reveal">
+    <p class="section-label">Anomalies principales</p>
+    <h2 class="section-title">Les bugs <em>bloquants</em></h2>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Critique</span>
+      <span class="anomalie-niveau">Test exploratoire</span>
+    </div>
+    <h3>Impossible de s'inscrire à un événement ou d'envoyer un message</h3>
+    <p>Aucune requête ne part lors de la soumission des formulaires d'inscription et de contact - l'utilisateur ne reçoit aucun message de confirmation ni d'erreur.</p>
+  </div>
+
+  <div class="anomalie-card reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag">Critique</span>
+      <span class="anomalie-niveau">Test scripté</span>
+    </div>
+    <h3>Lien du menu "724events" non cliquable</h3>
+    <p>Le lien de navigation principal est inactif depuis la page de réservation, bloquant la navigation de l'utilisateur.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">Test exploratoire</span>
+    </div>
+    <h3>Aucune validation frontend sur les champs obligatoires</h3>
+    <p>Les formulaires Inscription et Contact ne bloquent pas la soumission lorsque des champs obligatoires sont vides, contrairement au comportement attendu.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">Test exploratoire</span>
+    </div>
+    <h3>Le champ "Date" autorise une date passée</h3>
+    <p>Il est possible de sélectionner une date déjà passée lors de l'inscription à un événement, sans message d'erreur ni blocage.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">Test exploratoire</span>
+    </div>
+    <h3>La carte affichée ne correspond pas au lieu réel de l'événement</h3>
+    <p>Sur certaines fiches événement, la localisation affichée sur la carte diffère de l'adresse réelle - un cas non prévu dans les scénarios initiaux, mais important pour l'expérience utilisateur.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">Test scripté</span>
+    </div>
+    <h3>Slider défile avec un espace blanc entre les groupes</h3>
+    <p>Le carrousel présente un défaut d'affichage lors du défilement entre deux groupes d'éléments.</p>
+  </div>
+
+  <div class="anomalie-card majeure reveal">
+    <div class="anomalie-header">
+      <span class="anomalie-tag majeure">Majeure</span>
+      <span class="anomalie-niveau">Test exploratoire</span>
+    </div>
+    <h3>Problèmes d'accessibilité et de navigation sur mobile</h3>
+    <p>Plusieurs anomalies de responsive design (footer, header, sections) gênent la navigation sur smartphone.</p>
+  </div>
+</section>
+
+<!-- OUTILS -->
+<section class="outils">
+  <div class="reveal">
+    <p class="section-label">Outils d'analyse</p>
+    <h2 class="section-title">Diagnostiquer <em>les anomalies</em></h2>
+  </div>
+  <div class="outils-grid reveal">
+    <div class="outil-chip">
+      <div class="name">Swagger</div>
+      <div class="desc">Comprendre les endpoints API, vérifier si la requête est bien envoyée</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Postman</div>
+      <div class="desc">Tester les requêtes isolément et vérifier les réponses attendues</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Console navigateur</div>
+      <div class="desc">Repérer les erreurs JS, les codes 400/500, valider la logique front</div>
+    </div>
+    <div class="outil-chip">
+      <div class="name">Jira &amp; Notion</div>
+      <div class="desc">Documentation des anomalies, mise à jour du cahier de recette</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFLEXION -->
+<section class="reflexion">
+  <div class="reveal">
+    <p class="section-label">Recul & analyse critique</p>
+    <h2 class="section-title">Ce que j'aurais pu <em>approfondir</em></h2>
+  </div>
+  <div class="reveal">
+    <div class="reflex-item">
+      <h3>Identification de la criticité</h3>
+      <p>Pour chaque bug détecté, j'ai évalué sa criticité selon trois critères : l'impact sur l'utilisateur final (blocage complet ou détail visuel), la fréquence d'occurrence (cas courant ou rare), et la visibilité du bug (immédiatement visible ou plus technique/silencieux).</p>
+    </div>
+    <div class="reflex-item">
+      <h3>Axes d'amélioration identifiés</h3>
+      <p>Avec plus de temps, j'aurais croisé les tests avec la maquette UX/UI et les spécifications visuelles, mieux cadré les besoins fonctionnels avec le client (user stories), réalisé des tests multi-navigateurs plus poussés, et approfondi la gestion des erreurs côté serveur. J'ai choisi de prioriser la couverture fonctionnelle manuelle et la qualité des remontées Jira.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="conclusion">
+  <div class="reveal">
+    <p class="section-label">Conclusion de la campagne</p>
+    <h2 class="section-title">Décision : <em>NO GO</em></h2>
+  </div>
+  <div class="conclusion-text reveal">
+    <span class="conclusion-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      NO GO — Mise en production non recommandée en l'état
+    </span>
+    <p>Compte tenu du nombre de bugs bloquants et majeurs non corrigés, ainsi que des dysfonctionnements critiques dans les formulaires d'inscription et de contact, plusieurs fonctionnalités essentielles restent bloquantes pour l'utilisateur final.</p>
+    <p>Il est impossible de s'inscrire à un événement ou de contacter l'organisateur, l'adresse exacte du lieu n'est pas toujours indiquée clairement, des anomalies responsive gênent fortement la navigation mobile, et certaines logiques backend ne répondent pas correctement (absence de retour d'API, validation côté serveur incomplète).</p>
+    <p>Ces éléments touchent directement l'expérience utilisateur, la fiabilité du service et la confiance dans le produit.</p>
+    <p style="margin-top:2rem; font-weight:600; color:var(--text);">Recommandations prioritaires :</p>
+    <ul class="reco-list">
+      <li>Corriger les formulaires d'inscription et de contact (absence de requête/confirmation)</li>
+      <li>Ajouter une validation frontend sur les champs obligatoires et le format des données</li>
+      <li>Corriger l'affichage des cartes de localisation des événements</li>
+      <li>Améliorer le responsive design sur mobile</li>
+      <li>Renforcer la gestion des erreurs côté backend</li>
+    </ul>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">724 Events - Projet QA</span>
+  <a href="EcoBlissBath.html">
+    Projet précédent
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natalia Petrakova — QA Tester & UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">NP<span>.</span></div>
+  <ul>
+    <li><a href="#home">Accueil</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#service">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-img">
+    <img src="images/natalia.JPG" alt="Natalia Petrakova">
+  </div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">QA Tester & UI/UX Designer</p>
+    <h1 class="hero-title">
+      Bonjour, je suis<br>
+      <span class="name">Natalia</span>
+    </h1>
+    <p class="hero-desc">À l'intersection du design utilisateur et de la qualité logicielle.</p>
+    <p class="hero-desc">Forte de 4 ans d'expérience dans la conception d'interfaces digitales, j'apporte une vision centrée utilisateur tout en veillant à la qualité fonctionnelle des produits.</p>
+    <p class="hero-desc">Aujourd'hui, je souhaite relever de nouveaux défis en QA et contribuer à la fiabilité et à l'amélioration continue des produits digitaux.</p>
+    <div class="hero-actions">
+      <a href="images/CV_QA_Natalia_PETRAKOVA.docx.pdf" target="_blank" class="btn-primary">Voir mon CV</a>
+      <a href="#contact" class="btn-ghost">
+        Me contacter
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Ans d'expérience UX + QA</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Secteurs d’activité</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid reveal">
+
+    <!-- COLONNE GAUCHE -->
+    <div>
+      <p class="section-eyebrow">Mon parcours</p>
+      <h2 class="section-title">Une évolution naturelle<br>vers la qualité logicielle</h2>
+      <p class="about-text">Au cours de mes expériences en UX/UI Design dans les secteurs de l'assurance, de l'automobile et de la défense, j'ai développé une solide compréhension des besoins utilisateurs, des enjeux métier et des contraintes techniques.</p>
+      <p class="about-text">Cette proximité avec les équipes produit et développement m'a progressivement amenée à m'intéresser à la qualité logicielle. Aujourd'hui, cette double expérience me permet d'aborder les produits avec un regard à la fois utilisateur, fonctionnel et qualité.</p>
+      <p class="about-text">Rigoureuse, curieuse et tournée vers les détails - je suis convaincue que la qualité logicielle n'est pas une contrainte, c'est un investissement.</p>
+    </div>
+
+    <!-- COLONNE DROITE -->
+    <div>
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('experience', event)">Expérience</button>
+        <button class="tab" onclick="showTab('skills', event)">Outils & Technologies</button>
+        <button class="tab" onclick="showTab('education', event)">Éducation</button>
+        <button class="tab" onclick="showTab('formation', event)">Formation</button>
+      </div>
+
+      <div id="tab-experience" class="tab-panel active">
+        <div class="timeline-item">
+          <div class="tl-meta">Février 2025 - Août 2026</div>
+          <div class="tl-title">Testeur QA</div>
+          <div class="tl-sub">Cezami - Paris</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2023 - 2024</div>
+          <div class="tl-title">UI/UX Designer</div>
+          <div class="tl-sub">Agirc-Arrco - Paris</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2023</div>
+          <div class="tl-title">UI/UX Designer</div>
+          <div class="tl-sub">Atermes - Montigny-le-Bretonneux</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2022</div>
+          <div class="tl-title">UI/UX Designer</div>
+          <div class="tl-sub">Renault Digital - Boulogne-Billancourt</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2021 - 2022</div>
+          <div class="tl-title">Service Designer</div>
+          <div class="tl-sub">Celside Insurance SFAM - Paris</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2018 - 2021</div>
+          <div class="tl-title">UI/UX Designer</div>
+          <div class="tl-sub">DSI Carrefour - Evry-Courcouronnes</div>
+        </div>
+      </div>
+
+      <div id="tab-skills" class="tab-panel">
+        <p class="skills-category">QA</p>
+        <div class="skill-item"><span class="skill-name">Jira <span class="dot">●</span> Zephyr <span class="dot">●</span> Postman <span class="dot">●</span> Swagger <span class="dot">●</span> Cypress</span></div>
+        <p class="skills-category">IA & Productivité</p>
+        <div class="skill-item"><span class="skill-name">Claude <span class="dot">●</span> Notion <span class="dot">●</span> Excel <span class="dot">●</span> Airtable <span class="dot">●</span> Trello</span></div>
+        <p class="skills-category">Front-end & Design</p>
+<div class="skill-item"><span class="skill-name">Figma <span class="dot">●</span> HTML/CSS <span class="dot">●</span> JavaScript <span class="dot">●</span> React <span class="dot">●</span> GitHub</span></div>
+      </div>
+
+      <div id="tab-education" class="tab-panel">
+        <div class="timeline-item">
+          <div class="tl-meta">2026</div>
+          <div class="tl-title">Développeur Informatique : Testeur Logiciel</div>
+          <div class="tl-sub">Openclassrooms</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2019</div>
+          <div class="tl-title">UX Designer</div>
+          <div class="tl-sub">L'École Multimédia</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2017</div>
+          <div class="tl-title">Web Designer</div>
+          <div class="tl-sub">Access Code School</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-meta">2014</div>
+          <div class="tl-title">Designer Graphique</div>
+          <div class="tl-sub">MJM Graphic Design</div>
+        </div>
+      </div>
+
+     <div id="tab-formation" class="tab-panel">
+  <div class="timeline-item">
+    <div class="tl-meta">2025</div>
+    <div class="tl-title">Prompt Engineering & Generative AI</div>
+    <div class="tl-sub">Brunoyam School</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-meta">2024</div>
+    <div class="tl-title">Séjour linguistique à Londres</div>
+    <div class="tl-sub">EF Education First</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-meta">2023</div>
+    <div class="tl-title">Maquette et prototypage avec Figma</div>
+    <div class="tl-sub">École Gobelins - Paris</div>
+  </div>
+</div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section id="service">
+  <div class="services-header reveal">
+    <div>
+      <p class="section-eyebrow">Ce que je fais</p>
+      <h2 class="section-title">Mes services</h2>
+    </div>
+  </div>
+
+  <div class="services-grid reveal">
+
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">
+  <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+</div>
+      <h3>Test fonctionnel</h3>
+      <ul class="service-list">
+        <li>Analyse des spécifications fonctionnelles</li>
+        <li>Conception de cas de test et scénarios utilisateurs</li>
+        <li>Tests fonctionnels, exploratoires et de régression</li>
+        <li>Qualification et suivi des anomalies</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">
+  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+</div>
+      <h3>Gestion & Documentation</h3>
+      <ul class="service-list">
+        <li>Plans de test et cahiers de recette</li>
+        <li>Gestion des campagnes de test (Jira / Zephyr)</li>
+        <li>Rapports d’anomalies et bilans de recette</li>
+        <li>Collaboration avec les développeurs et Product Owners</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">
+  <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+</div>
+      <h3>Test d'API</h3>
+      <ul class="service-list">
+        <li>Tests d’endpoints REST avec Postman</li>
+        <li>Validation des réponses JSON</li>
+        <li>Vérification de la documentation Swagger</li>
+        <li>Contrôle des flux de données et des erreurs</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </div>
+      <h3>UI/UX Design & Audit qualité</h3>
+      <ul class="service-list">
+        <li>Analyse des parcours utilisateurs</li>
+        <li>Wireframes et prototypes Figma</li>
+        <li>Tests d’utilisabilité</li>
+        <li>Vérification de la cohérence fonctionnelle des interfaces</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">05</div>
+<div class="service-icon">
+  <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8l2 2-2 2M11 12h4"/></svg>
+</div>
+      <h3>Automatisation des tests</h3>
+      <ul class="service-list">
+        <li>Création de scénarios Cypress</li>
+        <li>Automatisation de tests E2E</li>
+        <li>Maintenance des scripts</li>
+        <li>Analyse des résultats d’exécution</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <h3>Emailing & Outils marketing</h3>
+      <ul class="service-list">
+        <li>Création de templates Mailjet et Mailgun</li>
+        <li>Validation des e-mails transactionnels</li>
+        <li>Vérification des variables dynamiques</li>
+        <li>Analyse des logs</li>
+      </ul>
+    </div>
+
+        <div class="service-card">
+      <div class="service-num">07</div>
+<div class="service-icon">
+  <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+</div>
+      <h3>Validation des livraisons</h3>
+      <ul class="service-list">
+        <li>Vérification des nouvelles fonctionnalités</li>
+        <li>Validation des correctifs</li>
+        <li>Contrôle avant mise en production</li>
+        <li>Tests de non-régression</li>
+      </ul>
+    </div>
+
+            <div class="service-card">
+      <div class="service-num">08</div>
+<div class="service-icon">
+  <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+</div>
+      <h3>Analyse fonctionnelle</h3>
+      <ul class="service-list">
+        <li>Analyse des besoins métier</li>
+        <li>Compréhension des spécifications</li>
+        <li>Validation des règles de gestion</li>
+        <li>Contribution à l'amélioration continue des processus</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <p class="section-eyebrow">Mes réalisations</p>
+      <h2 class="section-title">Projets récents</h2>
+    </div>
+  </div>
+
+  <div class="portfolio-filters reveal">
+    <button class="filter-btn active" onclick="filterPortfolio('all', event)">Tous</button>
+    <button class="filter-btn" onclick="filterPortfolio('qa', event)">QA Testing</button>
+    <button class="filter-btn" onclick="filterPortfolio('ux', event)">UX Design</button>
+    <button class="filter-btn" onclick="filterPortfolio('developpement', event)">Développement</button>
+  </div>
+
+  <div class="portfolio-grid reveal" id="portfolio-grid">
+
+        <div class="portfolio-card" data-cat="qa">
+      <img src="images/724Events.png" alt="EcoBlissBath" class="portfolio-card-img">
+      <div class="portfolio-overlay">
+        <div class="port-tag">QA Testing</div>
+        <div class="port-title">724Events</div>
+        <a href="724Events.html" class="port-link">"Voir le projet" →</a>
+      </div>
+    </div>
+
+            <div class="portfolio-card" data-cat="qa">
+      <img src="images/EcoBlissBath.png" alt="EcoBlissBath" class="portfolio-card-img">
+      <div class="portfolio-overlay">
+        <div class="port-tag">QA Testing</div>
+        <div class="port-title">Eco Bliss Bath</div>
+        <a href="EcoBlissBath.html" class="port-link">"Voir le projet" →</a>
+      </div>
+    </div>
+
+            <div class="portfolio-card" data-cat="qa">
+      <img src="images/PayForge.png" alt="PayForge Tomsen" class="portfolio-card-img">
+      <div class="portfolio-overlay">
+        <div class="port-tag">QA Testing</div>
+        <div class="port-title">PayForge</div>
+        <a href="PayForge.html" class="port-link">"Voir le projet" →</a>
+      </div>
+    </div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/StadiumGO.png" alt="StadiumGO" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">StadiumGO</div>
+    <a href="StadiumGO.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/GarantMe.png" alt="GarantMe" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">GarantMe</div>
+    <a href="GarantMe.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/OSP.png" alt="OSP" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">OSP</div>
+    <a href="OSP.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/Cezami.png" alt="Cezami" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">Cezami</div>
+    <a href="Cezami.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/Atermes.png" alt="Atermes" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">Atermes</div>
+    <a href="ASOS.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+ <div class="portfolio-card" data-cat="ux">
+  <img src="images/Hubside.png" alt="Hubside" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">Hubside</div>
+    <a href="Hubside.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="ux">
+  <img src="images/Entoria.png" alt="Entoria" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">UX Design</div>
+    <div class="port-title">Entoria</div>
+    <a href="Entoria.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="developpement">
+  <img src="images/Booki.png" alt="Atermes" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">Développement</div>
+    <div class="port-title">Booki</div>
+    <a href="Booki.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="developpement">
+  <img src="images/Print-it.png" alt="Print-it" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">Développement</div>
+    <div class="port-title">Print-it</div>
+    <a href="PrintIt.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+  <div class="portfolio-card" data-cat="developpement">
+  <img src="images/Kasa.png" alt="Kasa" class="portfolio-card-img">
+  <div class="portfolio-overlay">
+    <div class="port-tag">Développement</div>
+    <div class="port-title">Kasa</div>
+    <a href="Kasa.html" class="port-link">Voir le projet →</a>
+  </div>
+</div>
+
+
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <p class="section-eyebrow">Travaillons ensemble</p>
+    <h2 class="section-title">Me contacter</h2>
+  </div>
+
+  <div class="contact-grid reveal">
+      <div class="contact-links">
+        <a href="mailto:natalia.petrakova@email.com" class="contact-link">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          nathalia.p@live.fr
+        </a>
+        <a href="tel:+33600000000" class="contact-link">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          07 69 44 18 15
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('nav ul');
+  navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+</script>
+</body>
+</html>

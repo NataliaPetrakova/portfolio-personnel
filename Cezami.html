@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cezami — Projet UX | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --blue: #1A56DB;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a56db 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/Cezami.png') center/cover no-repeat;
+  opacity: 0.25;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.hero h1 span { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--blue); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+/* DEMARCHE */
+.demarche { background: var(--bg); }
+.demarche-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.9; margin-top: 2rem; max-width: 800px; }
+
+/* FONCTIONNALITES */
+.fonctionnalites { background: var(--bg2); }
+.fonc-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.fonc-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.6rem; position: relative;
+}
+.fonc-num {
+  font-size: 2rem; font-weight: 800;
+  color: rgba(116,81,235,0.1);
+  position: absolute; top: 1rem; right: 1.2rem;
+}
+.fonc-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--text); }
+.fonc-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+/* MAQUETTES */
+.maquettes { background: var(--bg); }
+.maquette-block {
+  margin-bottom: 3.5rem;
+}
+.maquette-block:last-child { margin-bottom: 0; }
+.maquette-block h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.maquette-block p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; max-width: 750px; }
+.maquette-img {
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--border);
+}
+.maquette-img img { width: 100%; height: auto; display: block; }
+
+/* RESULTAT */
+.resultat { background: var(--bg2); text-align: center; }
+.resultat p { color: var(--muted); font-size: 1.05rem; line-height: 1.9; max-width: 750px; margin: 2rem auto 0; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid, .fonc-grid { grid-template-columns: 1fr; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">UX Design · Refonte d'outil interne</span>
+    <h1>Cez<span>ami</span></h1>
+    <p class="hero-desc">Refonte de l'interface de gestion des commandes : traçabilité complète des modifications, tri et filtres avancés, parcours de modification simplifié, et version mobile repensée pour les équipes terrain.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">UX Designer</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Refonte d'interface complète</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Contexte</div>
+        <div class="hero-meta-value">Poste chez Relax Massage</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Repenser un écran<br><em>utilisé au quotidien</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>Ce projet a été réalisé dans le cadre de mon poste chez Relax Massage. L'interface "Liste des commandes" est l'écran central utilisé quotidiennement par les équipes internes (administrateurs) pour suivre, modifier et facturer les prestations réservées par les clients.</p>
+      <p>J'ai mené cette refonte en m'appuyant sur Claude (Anthropic) comme outil de co-conception : itération rapide sur les maquettes, exploration de plusieurs approches UX pour un même écran, et affinage progressif des parcours à partir de mes retours et contraintes métier.</p>
+    </div>
+    <div>
+      <div class="contexte-card">
+        <h4>Problème à résoudre</h4>
+        <p>L'interface existante manquait de traçabilité (impossible de savoir qui avait modifié quoi et quand), de flexibilité dans le tri et le filtrage des commandes, et n'était pas pensée pour un usage mobile - pourtant fréquent pour les équipes terrain.</p>
+      </div>
+      <div class="contexte-card">
+        <h4>Utilisateurs cibles</h4>
+        <p>Réceptionnistes et managers gérant quotidiennement les commandes de prestations en établissements partenaires (hôtels, spas, prestataires).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMARCHE -->
+<section class="demarche">
+  <div class="reveal">
+    <p class="section-label">Ma démarche</p>
+    <h2 class="section-title">Concevoir <em>par itérations</em></h2>
+  </div>
+  <div class="demarche-text reveal">
+    <p>J'ai travaillé par itérations successives avec l'IA comme partenaire de conception : je décrivais le besoin métier ou le problème identifié, nous explorions ensemble plusieurs pistes de solutions, puis je validais, ajustais ou réorientais en fonction de la faisabilité et de la cohérence avec l'écosystème produit existant.</p>
+    <p>Cette méthode m'a permis de tester rapidement plusieurs hypothèses d'interface avant de figer les choix finaux, en restant chaque fois ancrée dans les contraintes réelles du métier et du produit.</p>
+  </div>
+</section>
+
+<!-- FONCTIONNALITES -->
+<section class="fonctionnalites">
+  <div class="reveal">
+    <p class="section-label">Ce que j'ai conçu</p>
+    <h2 class="section-title">7 chantiers <em>UX</em></h2>
+  </div>
+  <div class="fonc-grid reveal">
+    <div class="fonc-card">
+      <div class="fonc-num">01</div>
+      <h3>Liste des commandes repensée</h3>
+      <p>Un tableau dense mais lisible, avec des badges de provenance colorés (Local, Guest, Promo, Annulées) permettant d'identifier en un coup d'œil le type de réservation, et un code couleur par ligne cohérent avec ces statuts.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">02</div>
+      <h3>Tri multi-critères</h3>
+      <p>Possibilité d'empiler plusieurs critères de tri (ID, Date de création, Date/Heure) avec des badges numérotés indiquant visuellement leur ordre de priorité, et une option "Tout effacer" pour réinitialiser rapidement.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">03</div>
+      <h3>Panneau de filtres avancés</h3>
+      <p>Filtres combinables (type d'utilisateur, statut, reçu, règlement) avec des raccourcis rapides ("À confirmer", "Demande d'annulation") affichant un compteur en temps réel.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">04</div>
+      <h3>Historique de commande</h3>
+      <p>Un panneau latéral détaillant chaque modification : valeur avant/après, date et heure exactes, et identité de la personne à l'origine du changement - un vrai besoin métier de responsabilisation et de résolution de litiges.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">05</div>
+      <h3>Modification en plusieurs étapes</h3>
+      <p>Plutôt qu'un formulaire unique et surchargé, la modification d'une commande est découpée en étapes séquentielles (Statut/Prestataire/Planning, puis Options tarifaires) pour réduire la charge cognitive.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">06</div>
+      <h3>Sélection multiple & actions groupées</h3>
+      <p>Possibilité de sélectionner plusieurs commandes pour déclencher des actions en masse : génération de reçus, saisie d'un règlement cash.</p>
+    </div>
+  </div>
+  <div class="fonc-card reveal" style="margin-top:1.5rem;">
+    <div class="fonc-num">07</div>
+    <h3>Version mobile repensée en cards</h3>
+    <p>La table desktop, illisible sur petit écran, a été transformée en cartes empilées conservant toutes les informations essentielles (client, prestation, statut, prix) et les actions clés (voir facture, générer/télécharger reçu), avec une barre d'action fixe en bas d'écran pour les sélections multiples.</p>
+  </div>
+</section>
+
+<!-- MAQUETTES -->
+<section class="maquettes">
+  <div class="reveal">
+    <p class="section-label">Réalisation</p>
+    <h2 class="section-title">Les écrans <em>en détail</em></h2>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Tri multi-critères</h3>
+    <p>Les badges numérotés montrent l'ordre de priorité des critères de tri appliqués (ID, Date de création, Date/Heure).</p>
+    <div class="maquette-img">
+      <img src="images/NEW_LISTE_COMMANDES_TRI.png" alt="Liste des commandes — tri multi-critères">
+    </div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Historique de commande</h3>
+    <p>Chaque modification est tracée avec la valeur avant/après, la date, l'heure et l'auteur du changement.</p>
+    <div class="maquette-img">
+      <img src="images/LDC_Historique commande.png" alt="Panneau historique de commande">
+    </div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Modification de commande - Étape 1</h3>
+    <p>Statut, prestation, prestataire, cabine et planning avec sélection de créneau horaire.</p>
+    <div class="maquette-img">
+      <img src="images/LDC_MODIFIER (ETAPE_1).png" alt="Modification de commande étape 1 — planning">
+    </div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Modification de commande - Étape 2</h3>
+    <p>Choix des options tarifaires : offre standard, offres partenaires et offres promotionnelles.</p>
+    <div class="maquette-img">
+      <img src="images/LDC_MODIFIER (ETAPE_2).png" alt="Modification de commande étape 2 — options tarifaires">
+    </div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Version mobile - Sélection multiple</h3>
+    <p>Cartes empilées avec toutes les informations essentielles, sélection multiple et barre d'action fixe en bas d'écran.</p>
+    <div class="maquette-img" style="max-width:320px; margin:0 auto;">
+      <img src="images/NEW_LISTE_COMMANDES_SÉLECTION PLUSIEURS PRESTATIONS.png" alt="Version mobile — sélection multiple de prestations">
+    </div>
+  </div>
+</section>
+
+<!-- RESULTAT -->
+<section class="resultat">
+  <div class="reveal">
+    <p class="section-label" style="justify-content:center;">Résultat</p>
+    <h2 class="section-title">Une interface plus <em>transparente</em></h2>
+    <p>Une interface plus transparente (traçabilité), plus flexible (tri/filtres avancés) et réellement utilisable sur mobile - sans complexifier les tâches quotidiennes des équipes.</p>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">Cezami - Projet UX</span>
+  <a href="Kasa.html">
+    Projet précédent
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

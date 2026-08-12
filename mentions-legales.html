@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Mentions légales — Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .legal-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem 5rem;
+  }
+  .legal-wrap h2.section-title {
+    margin-bottom: 2rem;
+  }
+  .legal-block {
+    margin-bottom: 2.2rem;
+  }
+  .legal-block h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .legal-block p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+  }
+  .legal-block a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .legal-back {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .legal-credit {
+    margin-top: 3rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <ul>
+    <li><a href="natalia-petrakova-portfolio.html#home">Accueil</a></li>
+    <li><a href="natalia-petrakova-portfolio.html#about">À propos</a></li>
+    <li><a href="natalia-petrakova-portfolio.html#service">Services</a></li>
+    <li><a href="natalia-petrakova-portfolio.html#portfolio">Portfolio</a></li>
+    <li><a href="natalia-petrakova-portfolio.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Menu">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+</nav>
+
+<!-- MENTIONS LEGALES -->
+<section id="mentions-legales">
+  <div class="legal-wrap">
+    <p class="section-eyebrow">Informations légales</p>
+    <h2 class="section-title">Mentions légales</h2>
+
+    <div class="legal-block">
+      <p>
+        Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en
+        l'économie numérique, il est précisé aux utilisateurs du site
+        <a href="http://nataliapetrakova.free.fr/">http://nataliapetrakova.free.fr/</a> l'identité des
+        différents intervenants dans le cadre de sa réalisation et de son suivi.
+      </p>
+    </div>
+
+    <div class="legal-block">
+      <h3>Édition du site</h3>
+      <p>
+        Le présent site, accessible à l'URL <a href="http://nataliapetrakova.free.fr/">http://nataliapetrakova.free.fr/</a>
+        (le « Site »), est édité par Natalia PETRAKOVA, de nationalité Française (France).
+      </p>
+      <p>
+        Conformément à l'article 6-III-1 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans
+        l'économie numérique, l'éditeur, personne physique agissant à titre non professionnel, a choisi
+        de ne pas rendre publiques ses coordonnées personnelles. Celles-ci sont tenues à la disposition
+        de toute personne en faisant la demande, auprès de l'hébergeur du Site.
+      </p>
+    </div>
+
+    <div class="legal-block">
+      <h3>Hébergement</h3>
+      <p>
+        Le Site est hébergé par la société Free.fr, située 8, rue de la Ville-l'Évêque 75008 Paris
+        France (contact téléphonique : +33 1 73 50 20 00).
+      </p>
+    </div>
+
+    <div class="legal-block">
+      <h3>Directeur de publication</h3>
+      <p>Le Directeur de la publication du Site est Natalia PETRAKOVA.</p>
+    </div>
+
+    <div class="legal-block">
+      <h3>Nous contacter</h3>
+      <p>Par téléphone : <a href="tel:+33769441815">+33 7 69 44 18 15</a></p>
+      <p>Par email : <a href="mailto:nathalia.p@live.fr">nathalia.p@live.fr</a></p>
+    </div>
+
+    <a href="natalia-petrakova-portfolio.html" class="legal-back">← Retour à l'accueil</a>
+
+    <p class="legal-credit">
+      Génération des mentions légales par <a href="https://www.legalstart.fr/">Legalstart</a>.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('nav ul');
+  navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+</script>
+</body>
+</html>

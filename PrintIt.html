@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print It — Projet Développement | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --blue: #1A56DB;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a56db 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/PrintIt.png') center/cover no-repeat;
+  opacity: 0.25;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.hero h1 span { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--blue); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.contexte-card ul { list-style: none; margin-top: 0.5rem; }
+.contexte-card ul li {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+  padding-left: 1.1rem; position: relative; margin-bottom: 0.3rem;
+}
+.contexte-card ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 0.1rem;
+  font-size: 0.55rem; color: var(--accent);
+}
+
+/* ETAPES (timeline) */
+.etapes { background: var(--bg); }
+.etapes-timeline { display: flex; flex-direction: column; margin-top: 3rem; }
+.etape-item {
+  display: grid; grid-template-columns: 60px 1fr;
+  gap: 2rem; padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.etape-item:last-child { border: none; }
+.etape-num {
+  font-size: 1.4rem; font-weight: 800;
+  color: var(--accent); padding-top: 0.1rem;
+}
+.etape-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.etape-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+/* TECHNOLOGIES */
+.techs { background: var(--bg2); }
+.techs-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.tech-chip {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem 1rem; text-align: center;
+  font-size: 0.85rem; font-weight: 600; color: var(--text);
+}
+
+/* MAQUETTES */
+.maquettes { background: var(--bg); }
+.img-placeholder {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.8rem; color: var(--muted);
+  font-size: 0.8rem;
+}
+.img-placeholder svg { width: 36px; height: 36px; stroke: var(--muted); fill: none; stroke-width: 1; opacity: 0.4; }
+.img-full { width: 100%; height: 480px; margin: 3rem 0; }
+
+/* BILAN */
+.bilan { background: var(--bg2); }
+.bilan-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.9; margin-top: 2rem; max-width: 750px; }
+
+/* BTN */
+.btn-proto {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: linear-gradient(145deg, #7451EB, #9B6FF0);
+  color: #fff; text-decoration: none;
+  padding: 0.9rem 1.8rem; border-radius: 2rem;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.25s; cursor: none;
+}
+.btn-proto:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-proto svg { flex-shrink: 0; }
+
+/* GITHUB CTA */
+.github-cta {
+  background: var(--bg);
+  text-align: center;
+}
+.github-cta p { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid { grid-template-columns: 1fr; }
+  .techs-grid { grid-template-columns: 1fr 1fr; }
+  .etape-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Développement · Carrousel JavaScript</span>
+    <h1>Print<span> It</span></h1>
+    <p class="hero-desc">Ajout d'un carrousel interactif en JavaScript sur un site statique existant, pour mettre en pratique mes premiers pas en JavaScript et comprendre son interaction avec le HTML et le CSS.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">Développeuse Front-End</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Carrousel interactif · HTML/CSS/JS</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Secteur</div>
+        <div class="hero-meta-value">Formation OpenClassrooms</div>
+      </div>
+    </div>
+    <a href="https://github.com/NataliaPetrakova/projet-print-it" target="_blank" class="btn-proto">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 00-1.3-3.2 4.2 4.2 0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 00-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 00-.1 3.2A4.6 4.6 0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>
+      </svg>
+      Voir le projet sur GitHub
+    </a>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Mes premiers pas<br>en <em>JavaScript</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>J'ai commencé à apprendre JavaScript et ce projet m'a permis de le mettre en pratique pour la première fois. Mon objectif était de rendre un site internet statique plus dynamique en y ajoutant un carrousel interactif.</p>
+      <p>Ce projet m'a donné un bon aperçu du développement web interactif et m'a permis de faire mes premiers pas concrets en JavaScript.</p>
+    </div>
+    <div>
+      <div class="contexte-card">
+        <h4>Ma mission</h4>
+        <ul>
+          <li>Mettre à jour le code HTML existant</li>
+          <li>Ajouter un carrousel avec JavaScript</li>
+          <li>Comprendre comment JavaScript interagit avec le HTML et le CSS</li>
+        </ul>
+      </div>
+      <div class="contexte-card">
+        <h4>Outils</h4>
+        <p>Visual Studio Code pour écrire le code, GitHub pour enregistrer le travail et gérer les différentes versions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ETAPES -->
+<section class="etapes">
+  <div class="reveal">
+    <p class="section-label">Démarche</p>
+    <h2 class="section-title">Les étapes que <em>j'ai suivies</em></h2>
+  </div>
+  <div class="etapes-timeline reveal">
+    <div class="etape-item">
+      <div class="etape-num">01</div>
+      <div class="etape-content">
+        <h3>Mise à jour du HTML</h3>
+        <p>Adaptation de la structure existante pour intégrer les éléments nécessaires au carrousel.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">02</div>
+      <div class="etape-content">
+        <h3>Ajout d'event listeners sur les flèches</h3>
+        <p>Mise en place des écouteurs d'événements pour permettre la navigation manuelle entre les slides.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">03</div>
+      <div class="etape-content">
+        <h3>Création de bullet points pour le carrousel</h3>
+        <p>Ajout d'indicateurs visuels permettant de suivre et de sélectionner la slide active.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">04</div>
+      <div class="etape-content">
+        <h3>Changement de slide au clic sur les boutons</h3>
+        <p>Implémentation de la logique JavaScript déclenchant le changement de slide au clic.</p>
+      </div>
+    </div>
+    <div class="etape-item">
+      <div class="etape-num">05</div>
+      <div class="etape-content">
+        <h3>Mise en place d'un défilement infini</h3>
+        <p>Gestion des cas limites pour permettre un défilement continu, sans interruption en fin de liste.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGIES -->
+<section class="techs">
+  <div class="reveal">
+    <p class="section-label">Technologies</p>
+    <h2 class="section-title">Stack utilisée</h2>
+  </div>
+  <div class="techs-grid reveal">
+    <div class="tech-chip">HTML5</div>
+    <div class="tech-chip">CSS3</div>
+    <div class="tech-chip">JavaScript</div>
+    <div class="tech-chip">Visual Studio Code</div>
+    <div class="tech-chip">Git / GitHub</div>
+    <div class="tech-chip">DOM Events</div>
+  </div>
+</section>
+
+<!-- MAQUETTES -->
+<section class="maquettes">
+  <div class="reveal">
+    <p class="section-label">Réalisation</p>
+    <h2 class="section-title">Le carrousel <em>en action</em></h2>
+  </div>
+<div class="reveal" style="border-radius:16px; overflow:hidden; border:1px solid var(--border); margin:3rem 0;">
+    <img src="images/Printit_Carrousel.png" alt="Carrousel Print It — Site Impressions d'entreprises" style="width:100%; height:auto; display:block;">
+  </div>
+</section>
+
+<!-- BILAN -->
+<section class="bilan">
+  <div class="reveal">
+    <p class="section-label">Bilan</p>
+    <h2 class="section-title">Ce que <em>j'ai retenu</em></h2>
+  </div>
+  <div class="bilan-text reveal">
+    <p>Ce projet a été une première mise en pratique concrète du JavaScript après une phase d'apprentissage théorique. Il m'a permis de comprendre en profondeur comment le JavaScript s'articule avec le HTML et le CSS pour créer des interactions dynamiques : gestion des événements, manipulation du DOM, et logique de défilement infini.</p>
+  </div>
+</section>
+
+<!-- GITHUB CTA -->
+<section class="github-cta">
+  <div class="reveal">
+    <p class="section-label" style="justify-content:center;">Code source</p>
+    <h2 class="section-title">Retrouver le projet<br>sur <em>GitHub</em></h2>
+    <p>L'ensemble du code HTML/CSS/JavaScript est disponible en open source, accompagné de son historique de versions.</p>
+    <a href="https://github.com/NataliaPetrakova/projet-print-it" target="_blank" class="btn-proto">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 00-1.3-3.2 4.2 4.2 0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 00-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 00-.1 3.2A4.6 4.6 0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>
+      </svg>
+      Voir le projet sur GitHub
+    </a>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">Print It - Projet Développement</span>
+  <a href="Booki.html">
+    Projet précédent
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

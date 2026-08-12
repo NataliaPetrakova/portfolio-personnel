@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entoria — Projet UX | Natalia Petrakova</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --bg2: #F8F9FC;
+  --bg3: #EEF0F8;
+  --accent: #7451EB;
+  --accent2: #9B6FF0;
+  --blue: #1A56DB;
+  --text: #1D1D24;
+  --muted: #696969;
+  --border: rgba(0,0,0,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.15s ease;
+}
+#cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(116,81,235,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text); text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: var(--muted); text-decoration: none;
+  font-size: 0.85rem; transition: color 0.2s; cursor: none;
+}
+.nav-back:hover { color: var(--accent); }
+.nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* HERO */
+.hero {
+  min-height: 70vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1a56db 100%);
+  display: flex; align-items: flex-end;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('images/Entoria.png') center/cover no-repeat;
+  opacity: 0.25;
+}
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag {
+  display: inline-block;
+  background: var(--blue); color: #fff;
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 2rem;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.hero h1 span { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem; line-height: 1.8;
+  max-width: 550px; margin-bottom: 2rem;
+}
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  margin-bottom: 0.3rem;
+}
+.hero-meta-value {
+  font-size: 0.9rem; font-weight: 500; color: #fff;
+}
+.btn-proto {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff; text-decoration: none;
+  padding: 0.9rem 1.8rem; border-radius: 2rem;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.25s; cursor: none;
+}
+.btn-proto:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-proto svg { flex-shrink: 0; }
+
+/* SECTIONS */
+section { padding: 6rem 4rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 1px; background: var(--accent);
+}
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--blue); font-style: normal; }
+
+/* CONTEXTE */
+.contexte { background: var(--bg2); }
+.contexte-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: start; margin-top: 2rem;
+}
+.contexte-text p {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.9; margin-bottom: 1.2rem;
+}
+.contexte-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.contexte-card h4 {
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.contexte-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+/* DEMARCHE */
+.demarche { background: var(--bg); }
+.demarche-text p { color: var(--muted); font-size: 0.95rem; line-height: 1.9; margin-top: 2rem; max-width: 800px; }
+
+/* FONCTIONNALITES */
+.fonctionnalites { background: var(--bg2); }
+.fonc-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.fonc-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.6rem; position: relative;
+}
+.fonc-num {
+  font-size: 2rem; font-weight: 800;
+  color: rgba(116,81,235,0.1);
+  position: absolute; top: 1rem; right: 1.2rem;
+}
+.fonc-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; color: var(--text); }
+.fonc-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+/* MAQUETTES */
+.maquettes { background: var(--bg); }
+.maquette-block { margin-bottom: 3.5rem; }
+.maquette-block:last-child { margin-bottom: 0; }
+.maquette-block h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.maquette-block p { font-size: 0.87rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; max-width: 750px; }
+.maquette-img {
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--border);
+  background: var(--bg3);
+  min-height: 220px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.maquette-img::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 34px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.maquette-img::after {
+  content: '● ● ●';
+  position: absolute; top: 8px; left: 14px;
+  font-size: 0.6rem; letter-spacing: 3px; color: var(--border);
+}
+.maquette-label {
+  color: var(--muted); font-size: 0.85rem; font-weight: 500;
+  padding-top: 34px;
+}
+.maquette-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+
+/* RESULTAT */
+.resultat { background: var(--bg2); text-align: center; }
+.resultat p { color: var(--muted); font-size: 1.05rem; line-height: 1.9; max-width: 750px; margin: 2rem auto 0; }
+
+/* NAV PROJET */
+.nav-projet {
+  background: var(--bg3); padding: 3rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-projet a {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none; color: var(--muted);
+  font-size: 0.9rem; transition: color 0.2s; cursor: none;
+}
+.nav-projet a:hover { color: var(--accent); }
+.nav-projet a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.nav-projet-center { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* FOOTER */
+footer {
+  padding: 2rem 4rem; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer p { font-size: 0.8rem; color: var(--muted); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .hero { padding: 8rem 2rem 3rem; }
+  .contexte-grid, .fonc-grid, .maquette-grid-2 { grid-template-columns: 1fr; }
+  .nav-projet { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="natalia-petrakova-portfolio.html" class="logo">NP<span>.</span></a>
+  <a href="natalia-petrakova-portfolio.html#portfolio" class="nav-back">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">UX Design · Refonte parcours de souscription assurance</span>
+    <h1>Ent<span>oria</span></h1>
+    <p class="hero-desc">Refonte de l'espace courtier et simplification du parcours de souscription Assurances Multirisque Immeuble (MRI), suite au changement de la charte identitaire de l'entreprise et à l'évolution des besoins utilisateur.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Rôle</div>
+        <div class="hero-meta-value">UX Designer</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Livrable</div>
+        <div class="hero-meta-value">Refonte du parcours · Design System</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Secteur</div>
+        <div class="hero-meta-value">Assurance - Multirisque Immeuble</div>
+      </div>
+    </div>
+    <a href="https://www.figma.com/proto/nhfdwee9qgT3hbTQXHkenf/eMRI?page-id=0%3A1&node-id=1-5278&scaling=min-zoom&starting-point-node-id=1%3A3808&t=1ZNs1fVOTPX1jfZQ-1" target="_blank" class="btn-proto">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 24a4 4 0 004-4v-4H8a4 4 0 000 8z"/>
+        <path d="M8 16a4 4 0 010-8h4v8H8z"/>
+        <path d="M8 8a4 4 0 010-8h4v8H8z"/>
+        <path d="M16 8a4 4 0 100-8v8z"/>
+        <path d="M16 16a4 4 0 110-8h0a4 4 0 010 8z"/>
+      </svg>
+      Voir le prototype Figma
+    </a>
+  </div>
+</div>
+
+<!-- CONTEXTE -->
+<section class="contexte">
+  <div class="reveal">
+    <p class="section-label">Contexte</p>
+    <h2 class="section-title">Repenser un parcours<br>de <em>souscription</em></h2>
+  </div>
+  <div class="contexte-grid reveal">
+    <div class="contexte-text">
+      <p>Refonte de l'espace courtier et simplification du parcours de souscription Assurances Multirisque Immeuble suite à changement de la charte identitaire de l'entreprise et à l'évolution des besoins utilisateur.</p>
+      <p>L'objectif principal de l'assurance MRI est la couverture collective. Cette couverture permet d'indemniser les personnes victimes de problèmes dans ou provenant des parties communes de l'immeuble. Elle permet aussi de couvrir les risques graves pour l'immeuble comme les incendies ou les effondrements.</p>
+    </div>
+    <div>
+      <div class="contexte-card">
+        <h4>Problème à résoudre</h4>
+        <p>L'ancien parcours de souscription reposait sur des formulaires denses et peu lisibles, avec une charte graphique obsolète ne reflétant plus l'identité actuelle de l'entreprise.</p>
+      </div>
+      <div class="contexte-card">
+        <h4>Utilisateurs cibles</h4>
+        <p>Courtiers en assurance accompagnant leurs clients dans la souscription d'un contrat Multirisque Immeuble, depuis l'espace courtier dédié.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMARCHE -->
+<section class="demarche">
+  <div class="reveal">
+    <p class="section-label">Ma démarche</p>
+    <h2 class="section-title">Clarifier <em>le tunnel</em></h2>
+  </div>
+  <div class="demarche-text reveal">
+    <p>Le parcours de souscription existant regroupait de nombreuses informations sur des écrans uniques et denses (dates, souscripteur, descriptif, antécédents, garanties), rendant la lecture et la saisie fastidieuses pour le courtier.</p>
+    <p>J'ai découpé ce parcours en un tunnel séquentiel clair, avec un stepper visible en permanence (Date d'effet · Souscripteur · Descriptif · Antécédents · Garanties · Proposition), permettant de se situer à chaque étape et de revenir facilement en arrière si besoin. La nouvelle charte identitaire de l'entreprise a été appliquée à l'ensemble de l'interface.</p>
+  </div>
+</section>
+
+<!-- FONCTIONNALITES -->
+<section class="fonctionnalites">
+  <div class="reveal">
+    <p class="section-label">Ce que j'ai conçu</p>
+    <h2 class="section-title">Un parcours <em>en 6 étapes</em></h2>
+  </div>
+  <div class="fonc-grid reveal">
+    <div class="fonc-card">
+      <div class="fonc-num">01</div>
+      <h3>Stepper de progression</h3>
+      <p>Un indicateur d'étapes toujours visible (Date d'effet, Souscripteur, Descriptif, Antécédents, Garanties, Proposition) pour situer le courtier dans le parcours à tout moment.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">02</div>
+      <h3>Formulaires allégés</h3>
+      <p>Les champs denses de l'ancienne version ont été redistribués sur plusieurs écrans, avec des libellés clarifiés et les champs obligatoires clairement identifiés.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">03</div>
+      <h3>Nouvelle charte identitaire</h3>
+      <p>Application de la nouvelle identité visuelle de l'entreprise (couleurs, logo, typographie) sur l'ensemble de l'espace courtier.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">04</div>
+      <h3>Prototype interactif</h3>
+      <p>Un prototype navigable a été produit pour valider les parcours auprès des parties prenantes avant développement.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">05</div>
+      <h3>Design System - bibliothèque de boutons</h3>
+      <p>Une bibliothèque de composants boutons (Retour, Annuler, Valider, Refuser, Suivant, Continuer, Modifier, Souscrire) pour garantir la cohérence visuelle sur l'ensemble du produit.</p>
+    </div>
+    <div class="fonc-card">
+      <div class="fonc-num">06</div>
+      <h3>Suivi des collaborateurs &amp; statuts</h3>
+      <p>Un composant de suivi (logo, collaborateurs, statuts colorés) pensé pour le tableau de bord de gestion des dossiers en cours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MAQUETTES -->
+<section class="maquettes">
+  <div class="reveal">
+    <p class="section-label">Réalisation</p>
+    <h2 class="section-title">Les écrans <em>en détail</em></h2>
+  </div>
+
+<div class="maquette-block reveal">
+    <h3>Ancienne version</h3>
+    <p>Les écrans d'origine du parcours de souscription : formulaires denses, peu hiérarchisés, sur une ancienne charte graphique.</p>
+    <div class="maquette-grid-2">
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran1.png" alt="Ancienne version — Écran 1" style="width:80%; display:block; margin-top:34px;"></div>
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran2.png" alt="Ancienne version — Écran 2" style="width:80%; display:block; margin-top:34px;"></div>
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran3.png" alt="Ancienne version — Écran 3" style="width:80%; display:block; margin-top:34px;"></div>
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran4.png" alt="Ancienne version — Écran 4" style="width:80%; display:block; margin-top:34px;"></div>
+    </div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Nouveau tunnel - Date d'effet &amp; Souscripteur</h3>
+    <p>Premières étapes du parcours refondu, avec le stepper de progression et la nouvelle charte identitaire.</p>
+    <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran5.png" alt="Nouveau tunnel — Date d'effet / Souscripteur" style="width:80%; display:block; margin-top:34px;"></div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Nouveau tunnel - Date d'effet Descriptif &amp; Antécédents</h3>
+    <p>Étapes intermédiaires du parcours, avec formulaires allégés et champs obligatoires clarifiés.</p>
+    <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran6.png" alt="Nouveau tunnel — Descriptif / Antécédents" style="width:80%; display:block; margin-top:34px;"></div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Nouveau tunnel - Garanties &amp; Proposition</h3>
+    <p>Dernières étapes menant à la proposition finale de contrat.</p>
+    <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_ecran7.png" alt="Nouveau tunnel — Garanties / Proposition" style="width:80%; display:block; margin-top:34px;"></div>
+  </div>
+
+  <div class="maquette-block reveal">
+    <h3>Refonte Design System</h3>
+    <p>Bibliothèque de boutons standardisée, et composant de suivi des collaborateurs &amp; statuts pour le tableau de bord.</p>
+    <div class="maquette-grid-2">
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_statut.png" alt="Bibliothèque de boutons" style="width:80%; display:block; margin-top:34px;"></div>
+      <div class="maquette-img" style="min-height:auto; display:block;"><img src="images/Entoria_composant.png" alt="Suivi collaborateurs &amp; statuts" style="width:80%; display:block; margin-top:34px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTAT -->
+<section class="resultat">
+  <div class="reveal">
+    <p class="section-label" style="justify-content:center;">Résultat</p>
+    <h2 class="section-title">Un parcours <em>clarifié</em></h2>
+    <p>Un parcours de souscription structuré en étapes claires, une charte identitaire à jour sur l'ensemble de l'espace courtier, et un Design System réutilisable garantissant la cohérence des futurs écrans du produit.</p>
+  </div>
+</section>
+
+<!-- NAV PROJET -->
+<div class="nav-projet">
+  <a href="natalia-petrakova-portfolio.html#portfolio">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au portfolio
+  </a>
+  <span class="nav-projet-center">Entoria - Projet UX</span>
+  <a href="Cezami.html">
+    Projet précédent
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Natalia Petrakova - Tous droits réservés</p>
+  <p style="font-size:0.8rem; color:var(--muted);">nathalia.p@live.fr · 07 69 44 18 15</p>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
